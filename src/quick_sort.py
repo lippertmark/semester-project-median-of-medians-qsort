@@ -1,38 +1,58 @@
-def median_of_tree(arr, starte, stop):
-    if len(arr) == 0 or starte<0 or stop>len(arr) or starte >stop:
-        raise IndexError
-    size = stop - starte + 1
-    if size <2:
-        return stop
-    elif arr[starte]>=arr[stop]:
-        return starte
-    elif arr[stop]>=arr[starte]:
-        return stop
+def findMedian(a, p, r):
+    L = []
+    for i in range(p, r + 1):
+        L.append(a[i])
+    L.sort()
+    return L[(r - p + 1) // 2]
 
-def partion(arr, starte, stop, pivot):
-    if pivot<starte or pivot > stop:
-        raise IndexError
-    if len(arr) == 0 or starte<0 or stop>len(arr) or starte >stop:
-        raise IndexError
-    pivot_value = arr[pivot]
-    arr[pivot], arr[stop] = arr[stop], arr[pivot]
-    curr_pivot_index = starte
-    for i in range(starte, stop):
-        if arr[i]<pivot_value:
-            arr[i], arr[curr_pivot_index] = arr[curr_pivot_index], arr[i]
-            curr_pivot_index+=1
-    arr[stop], arr[curr_pivot_index] = arr[curr_pivot_index], arr[stop]
-    return curr_pivot_index
+def partition(a, p, r, x):
+    for i in range(p, r + 1):
+        if a[i] == x:
+            a[i], a[r] = a[r], a[i]
+            break
+    i = p - 1
+    for j in range(p, r):
+        if a[j] <= a[r]:
+            i += 1
+            a[i], a[j] = a[j], a[i]
+    a[i + 1], a[r] = a[r], a[i + 1]
+    return i + 1
+
+def KthSmallest(a, p, r, k):
+    n = r - p + 1
+    median = []
+    i = 0
+    while i < n// 5:
+        median.append(findMedian(a, p + 5 * i, p + 5 * i + 4))
+        i += 1
+    if i * 5 < n:
+        median.append(findMedian(a, p + 5 * i, p + 5 * i + (n % 5 - 1)))
+        i += 1
+    if i == 1:
+        medOfmed = median[i - 1]
+    else:
+        medOfmed = KthSmallest(median, 0, i - 1, i // 2)
+    q = partition(a, p, r, medOfmed)
+    i = q - p + 1
+    if i == k:
+        return a[q]
+    elif i > k:
+        return KthSmallest(a, p, q - 1, k)
+    else:
+        return KthSmallest(a, q + 1, r, k - i)
+
+def QuickSort(a, p, r):
+    if p >= r:
+        return
+    med = KthSmallest(a, p, r, ( r - p +1 )//2)
+    q = partition(a, p, r, med)
+    QuickSort(a, p, q- 1)
+    QuickSort(a, q + 1, r)
 
 def Sort(arr):
-    quick_sort(arr, 0, len(arr)-1)
+    QuickSort(arr, 0, len(arr)-1)
 
-def quick_sort(arr, starte, stop):
-    if starte <0:
-        raise IndexError
-    if starte >=stop:
-        return
-    meddian = median_of_tree(arr, starte, stop)
-    pivot_index = partion(arr, starte, stop, meddian)
-    quick_sort(arr, starte, pivot_index-1)
-    quick_sort(arr, pivot_index+1, stop)
+if __name__ == '__main__':
+    a = [1, 34, 6432, 23, 45, 45]
+    Sort(a)
+    print(a)
