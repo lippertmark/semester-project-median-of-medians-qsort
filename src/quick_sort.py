@@ -5,6 +5,7 @@ def findMedian(a, p, r):
     L.sort()
     return L[(r - p + 1) // 2]
 
+
 def partition(a, p, r, x):
     for i in range(p, r + 1):
         if a[i] == x:
@@ -18,11 +19,12 @@ def partition(a, p, r, x):
     a[i + 1], a[r] = a[r], a[i + 1]
     return i + 1
 
+
 def KthSmallest(a, p, r, k):
     n = r - p + 1
     median = []
     i = 0
-    while i < n// 5:
+    while i < n // 5:
         median.append(findMedian(a, p + 5 * i, p + 5 * i + 4))
         i += 1
     if i * 5 < n:
@@ -41,16 +43,19 @@ def KthSmallest(a, p, r, k):
     else:
         return KthSmallest(a, q + 1, r, k - i)
 
+
 def QuickSort(a, p, r):
     if p >= r:
         return
-    med = KthSmallest(a, p, r, ( r - p +1 )//2)
+    med = KthSmallest(a, p, r, (r - p + 1) // 2)
     q = partition(a, p, r, med)
-    QuickSort(a, p, q- 1)
+    QuickSort(a, p, q - 1)
     QuickSort(a, q + 1, r)
 
+
 def Sort(arr):
-    QuickSort(arr, 0, len(arr)-1)
+    QuickSort(arr, 0, len(arr) - 1)
+
 
 if __name__ == '__main__':
     a = [1, 34, 6432, 23, 45, 45]
