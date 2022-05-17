@@ -1,7 +1,4 @@
 from src.quick_sort import Sort
-from src.quick_sort import KthSmallest
-from src.quick_sort import partition
-from src.quick_sort import findMedian
 import time
 import numpy
 
