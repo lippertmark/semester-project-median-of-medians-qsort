@@ -14,8 +14,5 @@ def check_Sort():
         with open('analytics_data/analytic_Sort.txt', 'a') as file:
             file.write(f'{count_of_elems} {finish}\n')
 
-def check_KthSmallest():
-    pass
-
 if __name__ == '__main__':
     check_Sort()
